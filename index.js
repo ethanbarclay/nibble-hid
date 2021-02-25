@@ -4,6 +4,7 @@ const os = require("os-utils");
 const disk = require("diskusage");
 const fs = require("fs");
 const config = require("./config");
+const windows = require("get-window-by-name");
 
 // Choose which features to use here. This should
 // match what is in your keymap file.
@@ -42,15 +43,22 @@ function wait(ms) {
   });
 }
 
-var songMsg = [];
+var mediaMsg = [];
 async function startMediaMonitor() {
   while (true) {
-    var str = "SONGNAME";
-    songMsg = stringToUnicodeArray(str);
-    if (currentScreen == 1) {
-      sendDataToKeyboard(songMsg);
+    var song = windows.getWindowText("Spotify.exe")[0].processTitle;
+    if (song.includes("Spotify Premium")) {
+      // paused
+      mediaMsg[0] = 0;
+    } else {
+      // playing
+      mediaMsg = stringToUnicodeArray(song);
+      mediaMsg[0] = 1;
     }
-    await wait(100);
+    if (currentScreen == 1) {
+      sendDataToKeyboard(mediaMsg);
+    }
+    await wait(10);
   }
 }
 
@@ -61,7 +69,7 @@ const unicode_alpha = Array.from(
 
 function stringToUnicodeArray(string) {
   var arr = [];
-  arr.push(string.length);
+  arr.push(1);
   for (var i = 0; i < string.length; i++)
     arr.push(unicode_alpha.indexOf(string[i]) + 64);
   return arr;
@@ -116,7 +124,7 @@ function sendDataToKeyboard(msg) {
 
             // Send cached data immediately
             if (currentScreen == 1) {
-              sendDataToKeyboard(songMsg);
+              sendDataToKeyboard(mediaMsg);
             } else if (currentScreen == 2) {
               sendDataToKeyboard(perfMsg);
             }

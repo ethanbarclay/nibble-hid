@@ -5,6 +5,7 @@
   "main": "Keyboard.js",
   "dependencies": {
     "diskusage": "^1.1.3",
+    "get-window-by-name": "^2.0.0",
     "loudness": "^0.4.1",
     "node-hid": "^1.3.0",
     "os-utils": "^0.0.14"
