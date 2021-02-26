@@ -44,6 +44,7 @@ function wait(ms) {
 }
 
 var mediaMsg = [];
+var cachedMediaMsg = [];
 async function startMediaMonitor() {
   while (true) {
     var song = windows.getWindowText("Spotify.exe")[0].processTitle;
@@ -60,7 +61,8 @@ async function startMediaMonitor() {
     const vol = await Promise.all([loudness.getVolume()]);
     mediaMsg[0] = vol[0] + 25;
 
-    if (currentScreen == 1) {
+    if (currentScreen == 1 && mediaMsg != cachedMediaMsg) {
+      cachedMediaMsg = mediaMsg;
       sendDataToKeyboard(mediaMsg);
     }
     await wait(10);
