@@ -61,7 +61,7 @@ async function startMediaMonitor() {
     const vol = await Promise.all([loudness.getVolume()]);
     mediaMsg[0] = vol[0] + 25;
 
-    if (currentScreen == 1 && mediaMsg != cachedMediaMsg) {
+    if (currentScreen == 1) {
       cachedMediaMsg = mediaMsg;
       sendDataToKeyboard(mediaMsg);
     }
