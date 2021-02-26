@@ -49,12 +49,17 @@ async function startMediaMonitor() {
     var song = windows.getWindowText("Spotify.exe")[0].processTitle;
     if (song.includes("Spotify Premium")) {
       // paused
-      mediaMsg[0] = 0;
+      mediaMsg[1] = 0;
     } else {
       // playing
       mediaMsg = stringToUnicodeArray(song);
-      mediaMsg[0] = 1;
+      mediaMsg[1] = 1;
     }
+
+    // add volume
+    const vol = await Promise.all([loudness.getVolume()]);
+    mediaMsg[0] = vol[0] + 25;
+
     if (currentScreen == 1) {
       sendDataToKeyboard(mediaMsg);
     }
@@ -69,6 +74,7 @@ const unicode_alpha = Array.from(
 
 function stringToUnicodeArray(string) {
   var arr = [];
+  arr.push(0);
   arr.push(1);
   for (var i = 0; i < string.length; i++)
     arr.push(unicode_alpha.indexOf(string[i]) + 64);

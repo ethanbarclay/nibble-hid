@@ -1,6 +1,6 @@
-# nibble-qmk-hid
+# nibble-hid
 
-A repository to utilize the OLED on the Nullbits Nibble board for real-time stock data, weather data, and PC component monitoring. Based on BlankSourceCode's [qmk-hid-display](https://github.com/BlankSourceCode/qmk-hid-display).
+The host client for interfacing with a qmk keyboard's oled display over QMK with real time system information. Grabs song information from Spotify. Currently only supports Windows, however, Linux support is planned. Based on BlankSourceCode's [qmk-hid-display](https://github.com/BlankSourceCode/qmk-hid-display).
 
 ## Overview
 
