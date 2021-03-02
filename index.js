@@ -33,10 +33,12 @@ const vendorId = config["vendorId"];
 const usage = config["usage"];
 const usagePage = config["usagePage"];
 
-// This will hold a reference to our hid device
+const updateInterval = config["updateInterval"];
+
+// this will hold a reference to our hid device
 let keyboard = null;
 
-// Just a helper function to wait a specified amount of time
+// just a helper function to wait a specified amount of time
 function wait(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
@@ -65,7 +67,7 @@ async function startMediaMonitor() {
       cachedMediaMsg = mediaMsg;
       sendDataToKeyboard(mediaMsg);
     }
-    await wait(10);
+    await wait(updateInterval);
   }
 }
 
@@ -97,6 +99,10 @@ async function startPerfMonitor() {
   }
 
   while (true) {
+    if (currentScreen != 2) {
+      await wait(500);
+      continue;
+    }
     updatePerf();
     const vol = await Promise.all([loudness.getVolume()]);
     perfMsg[0] = vol[0] + 25;
@@ -104,6 +110,7 @@ async function startPerfMonitor() {
     if (currentScreen == 2) {
       sendDataToKeyboard(perfMsg);
     }
+    await wait(updateInterval);
   }
 }
 
@@ -155,7 +162,7 @@ function sendDataToKeyboard(msg) {
       for (let i = 0; i < 390; i = i + 30) {
         let tmp = msg.slice(i, i + 30);
         tmp.unshift(0, currentScreenStatic);
-        wait(100);
+        wait(updateInterval);
         keyboard.write(tmp);
       }
     } catch (err) {
