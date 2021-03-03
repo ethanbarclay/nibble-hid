@@ -26,3 +26,8 @@ Next, set up config.js to match your keyboard's information as well as each page
 
 ![Performance screen](./img/performance.jpg)
 Currently, the performance data module will monitor four aspects of your PC: current volume, CPU utilization, RAM utilization, and disk space utilization on the C: drive, or another drive of your choice.
+
+## Media Data
+
+![Media screen](./img/media.jpg)
+The media screen will display information grabbed from the window title of Spotify.exe as well as your current volume.
